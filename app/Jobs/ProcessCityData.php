@@ -20,6 +20,7 @@ class ProcessCityData implements ShouldQueue
     public function __construct($dataset)
     {
         $this->dataset = $dataset;
+       
     }
 
     public function handle(): void
@@ -27,34 +28,9 @@ class ProcessCityData implements ShouldQueue
         try {
             DB::beginTransaction();
 
-            $array = [];
-            $count = count($this->dataset[0]);
-
-            for ($i = 0; $i < $count; $i++) {
-                if (!empty($this->dataset[0][$i]['city'])) {
-                    $array[] = [
-                        'city' => $this->dataset[0][$i]['city'],
-                        'city_ascii' => $this->dataset[0][$i]['city_ascii'],
-                        'state_id' => $this->dataset[0][$i]['state_id'],
-                        'state_name' => $this->dataset[0][$i]['state_name'],
-                        'county_fips' => $this->dataset[0][$i]['county_fips'],
-                        'county_name' => $this->dataset[0][$i]['county_name'],
-                        'lat' => $this->dataset[0][$i]['lat'],
-                        'lng' => $this->dataset[0][$i]['lng'],
-                        'population' => $this->dataset[0][$i]['population'],
-                        'density' => $this->dataset[0][$i]['density'],
-                        'source' => $this->dataset[0][$i]['source'],
-                        'military' => $this->dataset[0][$i]['military'] == true ? 1 : 0,
-                        'incorporated' => $this->dataset[0][$i]['incorporated'] == true ? 1 : 0,
-                        'timezone' => $this->dataset[0][$i]['timezone'],
-                        'ranking' => $this->dataset[0][$i]['ranking'],
-                        'zips' => $this->dataset[0][$i]['zips'] ?? null,
-                    ];
-                }
-            }
-
-            if (!empty($array)) {
-                City::insert($array); // Insert all data into the City model
+            // dd($array);
+            if (!empty($this->dataset)) {
+                City::insert($this->dataset); // Insert all data into the City model
             }
 
             DB::commit();

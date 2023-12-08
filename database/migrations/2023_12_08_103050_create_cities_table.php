@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('timezone');
             $table->integer('ranking');
             $table->string('zips')->nullable(); // Null 
+            $table->unsignedInteger('city_id');
             $table->timestamps();
         });
     }

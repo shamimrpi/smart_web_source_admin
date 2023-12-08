@@ -21,6 +21,7 @@ class CityImport implements ToModel, WithHeadingRow
 
         // Check if there are non-empty values in the row
         if (!empty($filteredRow)) {
+          
             return new City([
                 'city' => $filteredRow['city'] ?? null,
                 'city_ascii' => $filteredRow['city_ascii'] ?? null,
@@ -37,7 +38,8 @@ class CityImport implements ToModel, WithHeadingRow
                 'incorporated' => $filteredRow['incorporated'] == true ? 1 : 0,
                 'timezone' => $filteredRow['timezone'] ?? null,
                 'ranking' => $filteredRow['ranking'] ?? null,
-                'zips' => $filteredRow['zips'] ?? null
+                'zips' => $filteredRow['zips'] ?? null,
+                'city_id' => $filteredRow['id']
             ]);
         }
 
