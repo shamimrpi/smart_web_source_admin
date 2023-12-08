@@ -29,4 +29,6 @@ Route::middleware([
 
     Route::get('/city_upload',[CityController::class,'city_upload'])->name('city_upload');
     Route::post('/city_upload',[CityController::class,'upload'])->name('upload');
+    Route::get('/city_list',[CityController::class,'city_list'])->name('city_list');
+    Route::get('/city_show/{id}',[CityController::class,'show'])->name('city_show');
 });

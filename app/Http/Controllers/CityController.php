@@ -66,5 +66,21 @@ class CityController extends Controller
         
         
     }
+
+    public function city_list(Request $request){
+        $view = $request->ajax() ? 'city._city_list' : 'city.city_list';
+        $search = $request->search;
+        $dataset = City::where('state_name', 'like', '%' . $search . '%')
+        ->orWhere('county_name', 'like', '%' . $search . '%')
+        ->paginate(20);
+        return view($view, [
+            'dataset'  => $dataset,
+        ]);
+    }
+
+    public function show($id){
+        $data = City::find($id);
+        return view('city._details',compact('data'));
+    }
     
 }

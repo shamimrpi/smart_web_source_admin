@@ -18,6 +18,9 @@
                     <x-nav-link href="{{ route('city_upload') }}" :active="request()->routeIs('city_upload')">
                         {{ __('City Upload') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('city_list') }}" :active="request()->routeIs('city_list')">
+                        {{ __('City List') }}
+                    </x-nav-link>
                 </div>
             </div>
 
