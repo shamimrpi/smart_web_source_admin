@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/city_upload',[CityController::class,'city_upload'])->name('city_upload');
+    Route::post('/city_upload',[CityController::class,'upload'])->name('upload');
 });
