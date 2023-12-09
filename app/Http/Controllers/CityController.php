@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CityController extends Controller
 {
-    //
+    //backend methods start
 
     public function city_upload(){
         return view('city.city_upload');
@@ -29,8 +29,6 @@ class CityController extends Controller
 
         try {
             $dataset = Excel::toArray(new CityImport, $request->file('dataset'));
-
-           
             $count = count($dataset[0]);
 
             for ($i = 0; $i < $count; $i++) {
@@ -52,7 +50,7 @@ class CityController extends Controller
                         'timezone' => $dataset[0][$i]['timezone'],
                         'ranking' => $dataset[0][$i]['ranking'],
                         'zips' => $dataset[0][$i]['zips'] ?? null,
-                        'city_id' => $dataset[0][$i]['id'] ?? null,
+                        'city_id' => $dataset[0][$i]['id']
                     ];
                     ProcessCityData::dispatch($data)->onQueue('default');
                 }
@@ -83,5 +81,17 @@ class CityController extends Controller
         $data = City::find($id);
         return view('city._details',compact('data'));
     }
+    //backend methods start
+    // api city methods start
+    public function get_city_list(Request $request){
+        $search = $request->search;
+        $dataset = City::where('state_name', 'like', '%' . $search . '%')
+        ->orWhere('city', 'like', '%' . $search . '%')
+        ->orWhere('county_name', 'like', '%' . $search . '%')
+        ->paginate(20); // default pagination no 20 
+       return response()->json(['city_list' => $dataset]);
+    }
+
+    // api city methods end
     
 }
