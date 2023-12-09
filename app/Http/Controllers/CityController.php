@@ -30,12 +30,12 @@ class CityController extends Controller
         try {
             $dataset = Excel::toArray(new CityImport, $request->file('dataset'));
 
-            $array = [];
+           
             $count = count($dataset[0]);
 
             for ($i = 0; $i < $count; $i++) {
                 if (!empty($dataset[0][$i]['city'])) {
-                    $array[] = [
+                    $data = [
                         'city' => $dataset[0][$i]['city'],
                         'city_ascii' => $dataset[0][$i]['city_ascii'],
                         'state_id' => $dataset[0][$i]['state_id'],
@@ -54,10 +54,11 @@ class CityController extends Controller
                         'zips' => $dataset[0][$i]['zips'] ?? null,
                         'city_id' => $dataset[0][$i]['id'] ?? null,
                     ];
+                    ProcessCityData::dispatch($data)->onQueue('default');
                 }
             }
             // dd($array);
-            ProcessCityData::dispatch($array)->onQueue('default');
+           
 
             return back()->with('success', 'Data processing started. Check back later for results.');
         } catch (\Exception $e) {

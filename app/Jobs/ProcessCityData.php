@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\City;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,11 +16,11 @@ class ProcessCityData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $dataset;
+    protected $data;
 
-    public function __construct($dataset)
+    public function __construct($data)
     {
-        $this->dataset = $dataset;
+        $this->data = $data;
        
     }
 
@@ -29,13 +30,14 @@ class ProcessCityData implements ShouldQueue
             DB::beginTransaction();
 
             // dd($array);
-            if (!empty($this->dataset)) {
-                City::insert($this->dataset); // Insert all data into the City model
+            if (!empty($this->data)) {
+                City::insert($this->data); // Insert all data into the City model
             }
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            Log::error($e->getMessage());
         }
     }
 }
