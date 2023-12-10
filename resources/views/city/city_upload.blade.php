@@ -14,6 +14,15 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <form action="{{ route('upload')}}" method="post" enctype="multipart/form-data">
                         @csrf
@@ -29,7 +38,6 @@
                         </div>
                     </form>
 
-                    {{-- Handle form submission in the same view --}}
                    
                 </div>
             </div>
